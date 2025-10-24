@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mental Health Treatment Predictor 🧠</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #c2e9fb, #a1c4fd);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 750px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    .result {
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 18px;
+      color: #333;
+      text-align: center;
+      font-weight: 600;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .low {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .moderate {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .high {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px 25px;
+    }
+
+    label {
+      font-weight: 600;
+      color: #444;
+      text-align: left;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #f8f9fa;
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #4a90e2;
+      background: #fff;
+      outline: none;
+    }
+
+    button {
+      grid-column: span 2;
+      padding: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #357abd;
+      transform: scale(1.03);
+    }
+
+    @media (max-width: 768px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+      button {
+        grid-column: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🧠 Mental Health Treatment Predictor</h1>
+
+    {% if prediction %}
+      <div class="result 
+        {% if 'not be needed' in prediction %}low
+        {% elif 'consult' in prediction %}moderate
+        {% else %}high{% endif %}">
+        {{ prediction }} <br>
+        <strong>{{ score }}</strong>
+      </div>
+    {% endif %}
+
+    <form action="/predict" method="post">
+
+      <label>Age:</label>
+      <input type="number" name="Age" placeholder="Enter your age" required>
+
+      <label>Gender:</label>
+      <select name="Gender">
+        <option>Female</option>
+        <option>Male</option>
+        <option>Other</option>
+      </select>
+
+      <label>Country:</label>
+      <input type="text" name="Country" placeholder="Enter your country" required>
+
+      <label>Are you self-employed?</label>
+      <select name="self_employed">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Does anyone in your family have a history of mental illness?</label>
+      <select name="family_history">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>How many employees work in your company?</label>
+      <select name="no_employees">
+        <option>1-5</option>
+        <option>6-25</option>
+        <option>26-100</option>
+        <option>100-500</option>
+        <option>500-1000</option>
+        <option>More than 1000</option>
+      </select>
+
+      <label>Do you work remotely (from home)?</label>
+      <select name="remote_work">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Is your company a tech company?</label>
+      <select name="tech_company">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Does your employer provide mental health benefits?</label>
+      <select name="benefits">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Don't know</option>
+      </select>
+
+      <label>Are mental health care options easily available at work?</label>
+      <select name="care_options">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Not sure</option>
+      </select>
+
+      <label>Is there a wellness program at your workplace?</label>
+      <select name="wellness_program">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Don't know</option>
+      </select>
+
+      <label>Does your employer encourage seeking help?</label>
+      <select name="seek_help">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Don't know</option>
+      </select>
+
+      <label>Is mental health treatment kept confidential at your job?</label>
+      <select name="anonymity">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Don't know</option>
+      </select>
+
+      <label>Would you face negative consequences if you discussed mental health at work?</label>
+      <select name="mental_health_consequence">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Maybe</option>
+      </select>
+
+      <label>Would physical health issues affect your job opportunities?</label>
+      <select name="phys_health_consequence">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Maybe</option>
+      </select>
+
+      <label>Can you talk to your coworkers about mental health?</label>
+      <select name="coworkers">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Some of them</option>
+      </select>
+
+      <label>Can you talk to your supervisor about mental health?</label>
+      <select name="supervisor">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Some of them</option>
+      </select>
+
+      <label>Would you discuss mental health in a job interview?</label>
+      <select name="mental_health_interview">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Maybe</option>
+      </select>
+
+      <label>Would you discuss physical health in a job interview?</label>
+      <select name="phys_health_interview">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Maybe</option>
+      </select>
+
+      <label>Is mental health treated equally to physical health at your workplace?</label>
+      <select name="mental_vs_physical">
+        <option>Yes</option>
+        <option>No</option>
+        <option>Don't know</option>
+      </select>
+
+      <label>Have you observed anyone being treated unfairly for mental health issues?</label>
+      <select name="obs_consequence">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <button type="submit">Predict Treatment Need</button>
+    </form>
+  </div>
+</body>
+</html>
